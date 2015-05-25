@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'jquery', 'leftui', 'doT'],
-function(config, L, Stapes, $, leftUI, doT) {
+['config', 'bigl', 'stapes', 'jquery', 'leftui', 'doT','mergemaps'],
+function(config, L, Stapes, $, leftUI, doT, XMaps) {
 
   var ActivitiesModule = Stapes.subclass({
     constructor: function($template) {
@@ -60,7 +60,8 @@ function(config, L, Stapes, $, leftUI, doT) {
       var name = $activity.html();
       var app  = $activity.attr('app');
 
-      L.info('switching to', name);
+	  XMaps.SetProvider(app);
+      L.info('switching to', name);	
       var url = this.iface+'/change.php?query=relaunch-'+app+'&name='+name;
       var req = new XMLHttpRequest();
       req.open('GET', url, true);

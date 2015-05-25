@@ -3,17 +3,15 @@
   "udp_port": 8086,
   "lg_iface_base": "http://lg1:81",
   "earth_pos_url": "http://lg-head:8888/window.json?window_slug=earth_center",
-  "provider":0,
+  "provider":1,
   "tencentKey":"S5PBZ-MX53W-2AHRY-R7Y5S-WTCW6-OLFRF",
   "baiduKey":"pBjThwegIuaiKzPWNgqVNkID",
   "touchscreen": {
     "default_center": [37.212168,-112.976732],
     "poi_url": "/touchscreen/poi-defaults.json",
     "activities": [
-      { "title": "Google Earth", "app": "earth" }
-    ],
-	"providers": [
-      { "title": "Google", "app": "google" },
+	  { "title": "Google Earth", "app": "earth" },
+	  { "title": "Google", "app": "google" },
 	  { "title": "Tencent", "app": "tencent"},
 	  { "title": "Baidu", "app": "baidu"}
     ],

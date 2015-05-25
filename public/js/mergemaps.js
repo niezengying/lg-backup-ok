@@ -49,15 +49,24 @@ requirejs.config({
 });
 
 define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], function(BMaps,QMaps,GMaps,BmapLib,config,$) {
-   var apiProvider = config.provider+1;    
+   var apiProvider = config.provider;    
    var tencentKey = config.tencentKey;
    var baiduKey = config.baiduKey;
    var StreetViewStatus = {
 	OK: GMaps.StreetViewStatus.OK,
    };
    
-   function SetProvider(providerID) {
-     apiProvider = providerID;
+   function SetProvider(app) {
+	var providerID;
+	if(app == 'google')
+		providerID = 1;
+	else if(app == 'tencent')
+		providerID = 2;
+	else if(app == 'baidu')
+		providerID = 3;
+	else {};
+	
+    apiProvider = providerID;
    }
    
    //base class
@@ -143,7 +152,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			data = {
 				location: {pano:ret.detail.id,latLng: new QMaps.LatLng(ret.detail.location.lat,ret.detail.location.lng),description:ret.detail.description}
 			};
-		    cb(data,this.StreetViewStatus.OK);
+		    cb(data,StreetViewStatus.OK);
 		  }	 
 	     });	
 	    }
@@ -163,7 +172,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			links:ret.links,
 			tiles:ret.tiles
 			};
-			cb(data,this.StreetViewStatus.OK);	
+			cb(data,StreetViewStatus.OK);	
 		});		
 		break;
 	  }
@@ -186,7 +195,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			data = {
 				location: {pano:ret.id,latLng:ret.latlng,description:ret.description}
 			};
-		    cb(data,this.StreetViewStatus.OK);
+		    cb(data,StreetViewStatus.OK);
 		  }	 
 	     });
 		break;
@@ -202,7 +211,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			links:ret.links,
 			tiles:ret.tiles
 			};
-			cb(data,this.StreetViewStatus.OK);	
+			cb(data,StreetViewStatus.OK);	
 		});		
 		break;
 	  }
