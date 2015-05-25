@@ -195,19 +195,70 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		break;
 	 case 2:
 		map = new QMaps.Map(div,opt); 
-		map.visualRefresh = true;
 		map.addOverlay = function(overlay){};
 		break;
 	 case 3:
-		bmapoption = {
-			mapType: mapTypeID,
-		}
-		map = new BMaps.Map(div,bmapoption);
-		map.visualRefresh = true;
+		bmapOpt = {	mapType: opt.mapTypeID};
+		map = new BMaps.Map(div,bmapOpt);
+		map.setZoom(opt.zoom);
+		map.setCenter(opt.center);
+		
+		bmapTypeOpt = {
+			mapTypes: opt.mapTypeControlOptions.mapTypeIds,
+			anchor: opt.mapTypeControlOptions.position
+		};
+		if(opt.mapTypeControl) 
+			map.addControl(new BMap.MapTypeControl(bmapTypeOpt));
 		break;
 	 }
+	  map.visualRefresh = true;
 	  return map;
    }
+   
+   function MapTypeId()
+   {
+    var typeid;
+     switch(apiProvider)
+	 {
+     case 1:
+		return GMaps.MapTypeId;
+		break;
+	 case 2:
+	   return QMaps.MapTypeId;
+	   break;
+	 case 3:
+		var type = new BMaps.MapType;
+		var typeid = {
+			ROADMAP : type.BMAP_NORMAL_MAP,
+			HYBRID : type.BMAP_PERSPECTIVE_MAP,
+		};
+	  break;
+	 }
+	 return typeid;
+   }
+   
+   function ControlPosition()
+   {
+     switch(apiProvider)
+	 {
+     case 1: 
+      return GMaps.ControlPosition;
+	  break;
+	 case 2:
+	  return QMaps.ControlPosition;
+	   break;
+	 case 3:
+	  var contr_pos = {
+		TOP_LEFT: BMaps.ControlAnchor.MAP_ANCHOR_TOP_LEFT,
+		TOP_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_TOP_RIGHT,
+		BOTTOM_LEFT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_LEFT,
+		BOTTOM_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT
+	  }
+	  break;
+	}
+	  return ;	
+   }
+   
    
    
     //Coverage Module
@@ -373,43 +424,8 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
      return streetview;
    }
    
-
-
    
 
-
-
-   function MapTypeId()
-   {
-     if(apiProvider==1) 
-      return GMaps.MapTypeId;
-	 else if(apiProvider==2)
-	  return QMaps.MapTypeId;
-	 else if(apiProvider==3)
-      var type = new BMaps.MapType;
-	  var typeid = {
-		ROADMAP : type.BMAP_NORMAL_MAP,
-		HYBRID : type.BMAP_PERSPECTIVE_MAP,
-	  };
-	  return typeid;
-   }
-   
-   function ControlPosition()
-   {
-     if(apiProvider==1) 
-      return GMaps.ControlPosition;
-	 else if(apiProvider==2)
-	  return QMaps.ControlPosition;
-	 else if(apiProvider==3)
-	  var contr_pos = {
-		TOP_LEFT: BMaps.ControlAnchor.MAP_ANCHOR_TOP_LEFT,
-		TOP_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_TOP_RIGHT,
-		BOTTOM_LEFT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_LEFT,
-		BOTTOM_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT
-	  }
-	  return ;	
-   }
-   
    function disableDefaultUI(map,mystyle)
    {
     if(apiProvider==1) 

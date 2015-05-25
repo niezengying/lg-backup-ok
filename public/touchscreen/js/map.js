@@ -39,7 +39,7 @@ function(
 
       var self = this;
 
-      if (typeof GMaps === 'undefined') L.error('Maps API not loaded!');
+      if (typeof XMaps === 'undefined') L.error('Maps API not loaded!');
 
       this.default_center = new XMaps.LatLng(
         config.touchscreen.default_center[0],
@@ -53,13 +53,13 @@ function(
         backgroundColor: "black",
         center: this.default_center,
         zoom: 14,
-        disableDefaultUI: true,
+       // disableDefaultUI: true,
         mapTypeControl: config.touchscreen.show_maptypectl,
         mapTypeControlOptions: {
-          mapTypeIds: [ GMaps.MapTypeId.ROADMAP, GMaps.MapTypeId.HYBRID ],
-          position: GMaps.ControlPosition.TOP_LEFT
+          mapTypeIds: [ XMaps.MapTypeId.ROADMAP, XMaps.MapTypeId.HYBRID ],
+          position: XMaps.ControlPosition.TOP_LEFT
         },
-        mapTypeId: GMaps.MapTypeId[config.touchscreen.default_maptype]
+        mapTypeId: XMaps.MapTypeId[config.touchscreen.default_maptype]
       };
 
       this.map = new XMaps.Map(
