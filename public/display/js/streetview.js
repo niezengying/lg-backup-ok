@@ -121,9 +121,9 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
       // *** init streetview pov
       this.streetview.setPov({
         heading: 0,
-        pitch: 0,
-        zoom: this.zoom
+        pitch: 0
       });
+	  this.streetview.setZoom(this.zoom);
 
       // *** set the display mode as specified in global configuration
       this.streetview.setOptions({ mode: this.mode });
