@@ -38,7 +38,7 @@ define(['googlemaps','mergemaps'], function(GMaps,XMaps) {
 
   // recursive callback for expanding search
   function expandingCB(data, stat) {
-    if (stat == GMaps.StreetViewStatus.OK) {
+    if (stat == XMaps.StreetViewStatus.OK) {
       // success
       this.cb(data, stat, this.latlng);
 
@@ -66,10 +66,10 @@ define(['googlemaps','mergemaps'], function(GMaps,XMaps) {
 
   // make StreetViewPanoramaData friendlier
   function serializePanoData(panoData) {
-    panoData.location.latLng = {
+    panoData.location.latLng = XMaps.LatLng({
       lat: panoData.location.latLng.lat(),
       lng: panoData.location.latLng.lng()
-    };
+    });
   }
 
   return {

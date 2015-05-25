@@ -52,6 +52,9 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    var apiProvider = config.provider+1;    
    var tencentKey = config.tencentKey;
    var baiduKey = config.baiduKey;
+   var StreetViewStatus = {
+	OK: 1
+   };
    
    function SetProvider(providerID) {
      apiProvider = providerID;
@@ -107,30 +110,28 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	    break;
 	  case 2:		
 		sv = QMaps.PanoramaService();
-		sv.getPanoramaByLocation(position,radius,cb) = sv.getPano(position,radius,cb);
-		sv.getPanoramaById(panoid,cb) = getPanoramaById(panoid,cb);
 	    break;
 	  case 3:
 		sv = BMaps.PanoramaService(); 
-		sv.getPanoramaById(panoid,cb) = getPanoramaById(panoid,cb);
 		break;
 	  }
+	  sv.getPanoramaById = getPanoramaById;
+	  sv.getPanoramaByLocation = getPanoramaByLocation;
 	  return sv;
    }
    
  
    function getPanoramaById(panoid,cb)
    {
-      if(apiProvider==1) 
+	  switch(apiProvider)
 	  {
-		console.log("apiProvider 1");
+	  case 1:
 	    var sv_svc = new GMaps.StreetViewService();
 		sv_svc.getPanoramaById(panoid,cb);
-	  }
-	  else if(apiProvider==2) 
-	  {
+	    break;
+		
+	  case 2:	
 	    var data = null;
-		console.log("apiProvider 2");
 		console.log(panoid);
 	    if (panoid.match(/^\w+$/))
 	    {		
@@ -139,14 +140,16 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		  console.log(ret.status);
 		  if(ret.status == 0)
 		  {
-			data = {svid:ret.detail.id,latlng: new QMaps.LatLng(ret.detail.location.lat,ret.detail.location.lng),description:ret.detail.description};
-		    cb(data);
+			data = {
+				location: {pano:ret.detail.id,latLng: new QMaps.LatLng(ret.detail.location.lat,ret.detail.location.lng),description:ret.detail.description}
+			};
+		    cb(data,this.StreetViewStatus.OK);
 		  }	 
 	     });	
 	    }
-	  }
- 	  else if(apiProvider==3) 
-	  {
+	    break;
+		
+	  case 3:
 		data = null;
 		console.log("apiProvider 3");
 	    var sv_svc = new BMaps.PanoramaService();
@@ -155,28 +158,53 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			if (ret == null) {  
 				return;  
 			} 
-			data = {svid:ret.id,latlng:ret.position,description:ret.description,links:ret.links,tiles:ret.tiles};
-			cb(data);	
+			data = {
+			location: {pano:ret.id,latLng:ret.position,description:ret.description},
+			links:ret.links,
+			tiles:ret.tiles
+			};
+			cb(data,this.StreetViewStatus.OK);	
 		});		
-	  }  
+		break;
+	  }
    }
    
-   function getPanoramaByLocation(position, radius, cb)  //XXX
+   function getPanoramaByLocation(position, radius, cb)  
    {
-      if(apiProvider==1) 
+	  switch(apiProvider)
 	  {
+	  case 1:
 	    var sv_svc = new GMaps.StreetViewService();
 		sv_svc.getPanoramaByLocation(position,radius,cb);
-	  }
-	  else if(apiProvider==2)
-	  {
+	    break;
+		
+	  case 2:	
 	    var sv_svc = new QMaps.PanoramaService();
-		sv_svc.getPano(position,radius,cb);
-	  }
-	  else if(apiProvider==3)
-	  {
+		sv_svc.getPano(position,radius,function(ret) {
+		  if(ret !== 0)
+		  {
+			data = {
+				location: {pano:ret.id,latLng:ret.latlng,description:ret.description}
+			};
+		    cb(data,this.StreetViewStatus.OK);
+		  }	 
+	     });
+		break;
+		
+	  case 3:
 	    var sv_svc = new BMaps.PanoramaService();
-		sv_svc.getPanoramaByLocation(position,radius,cb);
+		sv_svc.getPanoramaByLocation(position,radius,function(ret){
+			if (ret == null) {  
+				return;  
+			} 
+			data = {
+			location: {pano:ret.id,latLng:ret.position,description:ret.description},
+			links:ret.links,
+			tiles:ret.tiles
+			};
+			cb(data,this.StreetViewStatus.OK);	
+		});		
+		break;
 	  }
    }
    
@@ -645,6 +673,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
   return{
+	StreetViewStatus: StreetViewStatus,
 	StreetViewService: StreetViewService,
 	computeOffset: computeOffset,
 	LatLng: LatLng,
