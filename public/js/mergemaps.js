@@ -270,21 +270,45 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    function InfoWindow(opt)
    {
       var info; 
-	  if(apiProvider==1)
+	  if(apiProvider==1){
 		info = new GMaps.InfoWindow({
         content: opt.content,
-        disableAutoPan: opt.disableAutoPan,
-		map: opt.map
+        disableAutoPan: opt.disableAutoPan
       });
-	  else if(apiProvider==2)
+		info.openInfoWindow = function(map,latlng){
+			info.setPosition(latlng);
+			info.open(map);
+		}
+		info.closeInfoWindow = function(map){
+			info.close();
+		};
+	  }
+	  else if(apiProvider==2){
 		info = new QMaps.InfoWindow({
         content: opt.content,
 		map: opt.map
       });
+		info.openInfoWindow = function(map,latlng){
+			info.setPosition(latlng);
+			info.open();
+		}
+		info.closeInfoWindow = function(map){
+			info.close();
+		};
+	  }
 	  else if(apiProvider==3){
+		var enableAutoPan = true;
+		if(opt.disableAutoPan == true)
+			enableAutoPan = false;
 		info = new BMaps.InfoWindow(opt.content,{
-		enableAutoPan: opt.disableAutoPan   //?
+		enableAutoPan: enableAutoPan
       });
+		info.openAtPosition = function(map,latlng){
+			map.openInfoWindow(info, latlng);
+		}
+		info.closeInfoWindow = function(map){
+			map.closeInfoWindow();
+		};
 	  }	  
 	  return info;
    }
