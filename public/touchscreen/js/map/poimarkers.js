@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps', 'sv_svc'],
-function(config, L, Stapes, GMaps, sv_svc) {
+['config', 'bigl', 'stapes', 'googlemaps','mergemaps', 'sv_svc'],
+function(config, L, Stapes, GMaps, XMaps, sv_svc) {
 
   var POIModule = Stapes.subclass({
     constructor: function(map) {
@@ -30,14 +30,14 @@ function(config, L, Stapes, GMaps, sv_svc) {
       var name   = panodata.location.description;
       var panoid = panodata.location.pano;
 
-      var marker = new GMaps.Marker({
+      var marker = new XMaps.Marker({
         position  : latlng,
         title     : name,
         clickable : true,
         map       : this.map
       });
 
-      GMaps.event.addListener(marker, 'click', function(mev) {
+      XMaps.addListener(marker, 'click', function(mev) {
         self.emit('marker_selected', panodata);
       });
     },

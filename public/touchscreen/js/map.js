@@ -16,13 +16,13 @@
 
 define(
 [
-  'config', 'bigl', 'stapes', 'mapstyle', 'googlemaps', 'sv_svc',
+  'config', 'bigl', 'stapes', 'mapstyle', 'mergemaps','googlemaps', 'sv_svc',
   // map submodules
   'map/coverage', 'map/svmarker', 'map/clicksearch', 'map/poimarkers',
   'map/earthpos'
 ],
 function(
-  config, L, Stapes, PeruseMapStyles, GMaps, sv_svc,
+  config, L, Stapes, PeruseMapStyles, XMaps, GMaps, sv_svc,
   // map submodules
   SVCoverageModule, SVMarkerModule, ClickSearchModule, POIMarkerModule,
   EarthPosModule
@@ -41,13 +41,13 @@ function(
 
       if (typeof GMaps === 'undefined') L.error('Maps API not loaded!');
 
-      this.default_center = new GMaps.LatLng(
+      this.default_center = new XMaps.LatLng(
         config.touchscreen.default_center[0],
         config.touchscreen.default_center[1]
       );
 
       // use the improved visuals from the maps preview
-      GMaps.visualRefresh = true;
+      XMaps.visualRefresh = true;
 
       var mapOptions = {
         backgroundColor: "black",
@@ -62,7 +62,7 @@ function(
         mapTypeId: GMaps.MapTypeId[config.touchscreen.default_maptype]
       };
 
-      this.map = new GMaps.Map(
+      this.map = new XMaps.Map(
         this.$canvas,
         mapOptions
       );
@@ -107,7 +107,7 @@ function(
       });
 
       // disable all <a> tags on the map canvas
-      GMaps.event.addListener(this.map, 'idle', function() {
+     XMaps.addListener(this.map, 'idle', function() {
         var links = self.$canvas.getElementsByTagName("a");
         var len = links.length;
         for (var i = 0; i < len; i++) {
@@ -117,7 +117,7 @@ function(
       });
 
       // signal that the map is ready
-      GMaps.event.addListenerOnce(this.map, 'idle', function() {
+      XMaps.addListenerOnce(this.map, 'idle', function() {
         console.debug('Map: ready');
         self.emit('ready');
       });

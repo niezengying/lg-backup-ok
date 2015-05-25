@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps'],
-function(config, L, Stapes, GMaps) {
+['config', 'bigl', 'stapes', 'mergemaps'],
+function(config, L, Stapes, XMaps) {
 
   var MIN_COVERAGE_ZOOM_LEVEL = 14;
 
@@ -24,7 +24,7 @@ function(config, L, Stapes, GMaps) {
     constructor: function(map) {
       this.map = map;
 
-      this.sv_marker = new GMaps.Marker({
+      this.sv_marker = new XMaps.Marker({
         position: this.default_center,
         title: 'Street View',
         icon: 'icons/sv_sprite.png',

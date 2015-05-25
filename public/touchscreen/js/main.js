@@ -30,7 +30,8 @@ requirejs.config({
     'doT': '/js/lib/doT/doT.min',
     'socketio': '/socket.io/socket.io',
     'googlemaps': '/js/googlemaps',
-    'sv_svc': '/js/sv_svc'
+    'sv_svc': '/js/sv_svc',
+	'mergemaps': '/js/mergemaps'
   },
   shim: {
     'config': { exports: 'config' },

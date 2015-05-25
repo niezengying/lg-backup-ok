@@ -14,9 +14,9 @@
 ** limitations under the License.
 */
 
-define(['googlemaps'], function(GMaps) {
+define(['googlemaps','mergemaps'], function(GMaps,XMaps) {
   // provide StreetViewService as a singleton in this module
-  var sv_svc = new GMaps.StreetViewService();
+  var sv_svc = new XMaps.StreetViewService();
 
   // extensions to getPanoramaByLocation:
   // optional expansion to max_radius

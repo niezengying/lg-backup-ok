@@ -15,7 +15,7 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps', 'sv_svc'],
+['config', 'bigl', 'stapes', 'googlemaps', 'mergemaps','sv_svc'],
 function(config, L, Stapes, GMaps, sv_svc) {
 
   var SEARCH_FAIL_BALLOON_TIME = 1100;

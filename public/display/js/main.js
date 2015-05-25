@@ -30,7 +30,8 @@ requirejs.config({
     'socketio': '/socket.io/socket.io',
     'googlemaps': '/js/googlemaps',
     'sv_svc': '/js/sv_svc',
-    'validate': '/js/validate'
+    'validate': '/js/validate',
+	'mergemaps': '/js/mergemaps'
   },
   shim: {
     'config': { exports: 'config' },
