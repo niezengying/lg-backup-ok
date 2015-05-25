@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps', 'mergemaps','sv_svc'],
-function(config, L, Stapes, GMaps,XMaps, sv_svc) {
+['config', 'bigl', 'stapes','mergemaps','sv_svc'],
+function(config, L, Stapes, XMaps, sv_svc) {
 
   var SEARCH_FAIL_BALLOON_TIME = 1100;
 
@@ -62,7 +62,7 @@ function(config, L, Stapes, GMaps,XMaps, sv_svc) {
           event.latLng,
           min_search_radius,
           function(data, stat, search_latlng) {
-            if(stat == GMaps.StreetViewStatus.OK) {
+            if(stat == XMaps.StreetViewStatus.OK) {
               self.emit('search_result', data);
             } else {
               self.open_search_fail_balloon(search_latlng);

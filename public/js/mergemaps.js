@@ -53,7 +53,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    var tencentKey = config.tencentKey;
    var baiduKey = config.baiduKey;
    var StreetViewStatus = {
-	OK: 1
+	OK: GMaps.StreetViewStatus.OK,
    };
    
    function SetProvider(providerID) {
@@ -61,15 +61,15 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
    //base class
-   function LatLng(first,second)
+   function LatLng(lat,lng)
    {
      var loc;
 	 if(apiProvider==1)
-	    loc = new GMaps.LatLng(first,second);
+	    loc = new GMaps.LatLng(lat,lng);
 	 else if(apiProvider==2) 
-		loc = new QMaps.LatLng(first,second);
+		loc = new QMaps.LatLng(lat,lng);
 	 else if(apiProvider==3) 
-		loc = new BMaps.Point(first,second);
+		loc = new BMaps.Point(lng,lat);
 	 return loc;
    }
    
@@ -292,7 +292,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
    
-   
     //Coverage Module
    function StreetViewCoverageLayer()
    {
@@ -315,7 +314,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		break;
 	}
 	 return sv_coverage_layer; 
-	 
    } 
    
    //Marker Module
@@ -347,7 +345,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	  }
 	  return marker;
    }  
-   
    
    //infoWindow
    function InfoWindow(opt)
@@ -395,7 +392,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	  }	  
 	  return info;
    }
-   
     
    //StreetViewPanorama
    function StreetViewPanorama(div,opt)
@@ -437,7 +433,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	  }
    }
    
-   
    function addListenerOnce(instance, eventName, handler)
    {
       if(apiProvider==1)
@@ -460,6 +455,15 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
   
+  
+  
+  
+  
+  
+  //////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
    function computeOffset(from, distance, heading)
    {
      var loc = null;
@@ -473,6 +477,9 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
 
 
+   
+   
+   
    function disableDefaultUI(map,mystyle)
    {
     if(apiProvider==1) 
@@ -607,15 +614,6 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	 }
    }
    
-   function dataProcess(panodata)
-   {
-     if(apiProvider==1) 
-	 {
-	   panodata.latlng = panodata.location.latLng;
-       panodata.svid = panodata.location.pano;
-	 }
-   }
-   
    function MarkerIndex(heading)
    {
      var nindex;
@@ -673,6 +671,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
   return{
+	apiProvider: apiProvider,
 	StreetViewStatus: StreetViewStatus,
 	StreetViewService: StreetViewService,
 	computeOffset: computeOffset,
@@ -700,7 +699,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 
 	setHdgIcon:setHdgIcon,
 	otherSet:otherSet,
-	dataProcess:dataProcess,
+	
 	MarkerIndex:MarkerIndex,
 	DefaultCenter:DefaultCenter,
 	SetProvider:SetProvider,

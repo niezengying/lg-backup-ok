@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps','mergemaps', 'sv_svc', 'jquery'],
-function(config, L, Stapes, GMaps, XMaps, sv_svc, $) {
+['config', 'bigl', 'stapes','mergemaps', 'sv_svc', 'jquery'],
+function(config, L, Stapes, XMaps, sv_svc, $) {
 
   var MIN_SEARCH_RADIUS = 200;
   var MAX_SEARCH_RADIUS = 3200;
@@ -58,7 +58,7 @@ function(config, L, Stapes, GMaps, XMaps, sv_svc, $) {
     },
 
     searchCB: function(panodata, stat) {
-      if (stat == GMaps.StreetViewStatus.OK) {
+      if (stat == XMaps.StreetViewStatus.OK) {
         this.emit('found_location', panodata);
       }
     }

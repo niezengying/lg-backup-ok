@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'validate', 'stapes', 'googlemaps','mergemaps','sv_svc'],
-function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
+['config', 'bigl', 'validate', 'stapes','mergemaps','sv_svc'],
+function(config, L, validate, Stapes, XMaps, sv_svc) {
   var StreetViewModule = Stapes.subclass({
 
     // street view horizontal field of view per zoom level
@@ -197,7 +197,7 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
       }
     },
 
-    // *** setPov(GMaps.StreetViewPov)
+    // *** setPov(XMaps.StreetViewPov)
     // set the view to the provided pov, immediately
     setPov: function(pov) {
       if (!validate.number(pov.heading) || !validate.number(pov.pitch)) {
@@ -208,7 +208,7 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
       this.streetview.setPov(pov);
     },
 
-    // *** restPov(Gmaps.StreetViewPov)
+    // *** restPov(Xmaps.StreetViewPov)
     // reset the pitch for the provided pov
     resetPov: function() {
       if (! this.master) {
@@ -271,7 +271,7 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
       console.debug('StreetView: resize', this.hfov, this.vfov);
     },
 
-    // *** _broadcastPov(GMaps.StreetViewPov)
+    // *** _broadcastPov(XMaps.StreetViewPov)
     // report a pov change to listeners
     _broadcastPov: function(pov) {
       this.emit('pov_changed', pov);
@@ -286,7 +286,7 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
       sv_svc.getPanoramaById(
         panoid,
         function (data, stat) {
-          if (stat == GMaps.StreetViewStatus.OK) {
+          if (stat == XMaps.StreetViewStatus.OK) {
             sv_svc.serializePanoData(data);
             self.emit('meta', data);
           }
@@ -295,8 +295,8 @@ function(config, L, validate, Stapes, GMaps, XMaps, sv_svc) {
     },
 
     // *** _getLinkDifference(
-    //                         GMaps.StreetViewPov,
-    //                         GMaps.StreetViewLink
+    //                         XMaps.StreetViewPov,
+    //                         XMaps.StreetViewLink
     //                       )
     // return the difference between the current heading and the provided link
     _getLinkDifference: function(pov, link) {

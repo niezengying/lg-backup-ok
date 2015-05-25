@@ -16,13 +16,13 @@
 
 define(
 [
-  'config', 'bigl', 'stapes', 'mapstyle', 'mergemaps','googlemaps', 'sv_svc',
+  'config', 'bigl', 'stapes', 'mapstyle', 'mergemaps', 'sv_svc',
   // map submodules
   'map/coverage', 'map/svmarker', 'map/clicksearch', 'map/poimarkers',
   'map/earthpos'
 ],
 function(
-  config, L, Stapes, PeruseMapStyles, XMaps, GMaps, sv_svc,
+  config, L, Stapes, PeruseMapStyles, XMaps, sv_svc,
   // map submodules
   SVCoverageModule, SVMarkerModule, ClickSearchModule, POIMarkerModule,
   EarthPosModule
@@ -142,7 +142,7 @@ function(
       sv_svc.getPanoramaById(
         panoid,
         function (data, stat) {
-          if (stat == GMaps.StreetViewStatus.OK) {
+          if (stat == XMaps.StreetViewStatus.OK) {
             sv_svc.serializePanoData(data);
             self.emit('meta', data);
           }
@@ -163,7 +163,7 @@ function(
       sv_svc.getPanoramaById(
         panoid,
         function (data, stat) {
-          if(stat == GMaps.StreetViewStatus.OK) {
+          if(stat == XMaps.StreetViewStatus.OK) {
             var result_latlng = data.location.latLng;
             var result_panoid = data.location.pano;
 
@@ -185,7 +185,7 @@ function(
       sv_svc.getPanoramaById(
         panoid,
         function (data, stat) {
-          if(stat == GMaps.StreetViewStatus.OK) {
+          if(stat == XMaps.StreetViewStatus.OK) {
             var result_latlng = data.location.latLng;
             var result_panoid = data.location.pano;
 

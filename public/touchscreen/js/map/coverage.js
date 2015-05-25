@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps','mergemaps'],
-function(config, L, Stapes, GMaps, XMaps) {
+['config', 'bigl', 'stapes','mergemaps'],
+function(config, L, Stapes,  XMaps) {
 
   var MIN_COVERAGE_ZOOM_LEVEL = 14;
 

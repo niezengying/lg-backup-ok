@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes', 'googlemaps','mergemaps', 'sv_svc'],
-function(config, L, Stapes, GMaps, XMaps, sv_svc) {
+['config', 'bigl', 'stapes','mergemaps', 'sv_svc'],
+function(config, L, Stapes,  XMaps, sv_svc) {
 
   var POIModule = Stapes.subclass({
     constructor: function(map) {
@@ -48,7 +48,7 @@ function(config, L, Stapes, GMaps, XMaps, sv_svc) {
       sv_svc.getPanoramaById(
         panoid,
         function (panodata, stat) {
-          if(stat == GMaps.StreetViewStatus.OK) {
+          if(stat == XMaps.StreetViewStatus.OK) {
             self._add_location_marker(panodata);
           } else {
             L.error('POIMarker: location query failed!');
