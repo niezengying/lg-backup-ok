@@ -64,7 +64,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		providerID = 2;
 	else if(app == 'baidu')
 		providerID = 3;
-	else {};
+	else providerID = 1;
 	
     apiProvider = providerID;
    }
@@ -437,7 +437,12 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		 QMaps.event.addListener(instance, eventName,handler);
 		 break;
 	  case 3:
-		 BMapLib.EventWrapper.addListener(instance, eventName, handler);
+		 var evtname = eventName;
+		 if(eventName == 'idle') evtname = 'tilesloaded';
+		 else if(eventName == 'zoom_changed') evtname = 'zoomend';
+		 else if(eventName == 'zoom_changed') evtname = 'zoomend';
+		 else if(eventName == 'pano_changed') evtname = 'position_changed';
+		 BMapLib.EventWrapper.addListener(instance, evtname, handler);
 		 break;
 	  }
    }

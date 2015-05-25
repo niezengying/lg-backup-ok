@@ -15,8 +15,8 @@
 */
 
 define(
-['config', 'bigl', 'stapes','mergemaps', 'sv_svc', 'jquery'],
-function(config, L, Stapes, XMaps, sv_svc, $) {
+['config', 'bigl', 'stapes','googlemaps','mergemaps', 'sv_svc', 'jquery'],
+function(config, L, Stapes, GMaps, XMaps, sv_svc, $) {
 
   var MIN_SEARCH_RADIUS = 200;
   var MAX_SEARCH_RADIUS = 3200;
@@ -35,7 +35,7 @@ function(config, L, Stapes, XMaps, sv_svc, $) {
             dataType: 'json',
 
             success: function(data) {
-              var ll = new XMaps.LatLng(data['cameraLat'], data['cameraLon']);
+              var ll = new GMaps.LatLng(data['cameraLat'], data['cameraLon']);
               sv_svc.getPanoramaByLocation(
                 ll,
                 MIN_SEARCH_RADIUS,
