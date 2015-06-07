@@ -39,7 +39,12 @@ requirejs.config({
       deps: [
         'async!http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false!callback'
       ]
-    }
+    },
+	'baidumaps': {
+      deps: [
+       'async!http://api.map.baidu.com/api?v=2.0&ak=NkArbcs6kW74wrlpZcTNHU2g&sensor=false!callback'
+      ]
+	}
   },
   map: {
     '*': { 'jquery': 'jquery-private' },

@@ -46,10 +46,12 @@ function(config, L, Stapes,  XMaps) {
 
     _show_coverage_layer: function() {
       this.sv_coverage_layer.setMap(this.map);
+	// XMaps.coverSetMap(this.sv_coverage_layer,this.map);
     },
 
     _hide_coverage_layer: function() {
-      this.sv_coverage_layer.setMap(null);
+      this.sv_coverage_layer.removeMap(this.map);
+	 // XMaps.coverSetMap(this.sv_coverage_layer,null);
     },
   });
 

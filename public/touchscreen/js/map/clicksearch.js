@@ -58,8 +58,10 @@ function(config, L, Stapes, XMaps, sv_svc) {
 
         console.debug('min', min_search_radius, 'max', max_search_radius);
 
+		var pos = XMaps.getEventPos(event); // event.latLng
+		console.log(pos);
         sv_svc.getPanoramaByLocation(
-          event.latLng,
+          pos,
           min_search_radius,
           function(data, stat, search_latlng) {
             if(stat == XMaps.StreetViewStatus.OK) {
@@ -75,9 +77,7 @@ function(config, L, Stapes, XMaps, sv_svc) {
 
     open_search_fail_balloon: function(latlng) {
       var self = this;
-
       this.close_search_fail_balloon();
-
       this.search_fail_balloon.openInfoWindow(this.map,latlng);
     //  this.search_fail_balloon.open(this.map);
 

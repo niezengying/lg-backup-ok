@@ -87,9 +87,13 @@ function(config, L, validate, Stapes, XMaps, sv_svc) {
       // *** options for the map object
       // the map will never be seen, but we can still manipulate the experience
       // with these options.
+	  this.default_center = new XMaps.LatLng(
+        config.touchscreen.default_center[XMaps.apiProvider - 1].lat,
+        config.touchscreen.default_center[XMaps.apiProvider - 1].lng
+      );
       var mapOptions = {
         disableDefaultUI: true,
-        center: new XMaps.LatLng(45,45),
+        center: this.default_center,
         backgroundColor: "black",
         zoom: 8
       };
@@ -111,6 +115,7 @@ function(config, L, validate, Stapes, XMaps, sv_svc) {
         this.$canvas,
         mapOptions
       );
+	  this.map.centerAndZoom(mapOptions.center,8);
 
       // *** init streetview object
       this.streetview = new XMaps.StreetViewPanorama(
@@ -124,6 +129,7 @@ function(config, L, validate, Stapes, XMaps, sv_svc) {
         pitch: 0
       });
 	  this.streetview.setZoom(this.zoom);
+	  this.streetview.setPano(config.display.default_pano[XMaps.apiProvider-1]);
 
       // *** set the display mode as specified in global configuration
       this.streetview.setOptions({ mode: this.mode });
@@ -187,7 +193,7 @@ function(config, L, validate, Stapes, XMaps, sv_svc) {
         L.error('StreetView: bad panoid to setPano!');
         return;
       }
-
+	  
       if (panoid != this.streetview.getPano()) {
         this.pano = panoid;
         this.streetview.setPano(panoid);

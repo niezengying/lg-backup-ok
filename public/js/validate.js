@@ -6,7 +6,10 @@ define([], function() {
 
     // validate a Google panoid
     panoid: function(panoid) {
-      if (panoid.match(/^[\w-]{22}$/) != null)
+     // if (panoid.match(/^[\w-]{22}$/) != null)
+	// if (panoid.match(/^[\w-]+$/))
+	return true;
+	if (panoid.match(/^[*]+$/))
         return true;
       else
         return false;

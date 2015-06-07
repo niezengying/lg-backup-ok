@@ -56,7 +56,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	OK: GMaps.StreetViewStatus.OK,
    };
    
-	function SetProvider(app) {
+   function SetProvider(app) {
 	var providerID;
 	if(app == 'google')
 		providerID = 1;
@@ -65,64 +65,49 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	else if(app == 'baidu')
 		providerID = 3;
 	else providerID = 1;
-
-	apiProvider = providerID;
-	}
+	
+    apiProvider = providerID;
+   }
    
    //base class
    function LatLng(lat,lng)
    {
-    var loc;
-	switch(apiProvider)
-	{
-	case 1:
+     var loc;
+	 if(apiProvider==1){
 	    loc = new GMaps.LatLng(lat,lng);
 		loc.lat = loc.lat;
 		loc.lng = loc.lng;
-		break;
-	case 2:
+		}
+	 else if(apiProvider==2) 
 		loc = new QMaps.LatLng(lat,lng);
-		break;
-	case 3:
+	 else if(apiProvider==3) 
 		loc = new BMaps.Point(lng,lat);
-		break;
-	}
-	return loc;
+		
+	 return loc;
    }
    
    function Point(x,y)
    {
-    var point;
-	switch(apiProvider)
-	{
-	case 1:
+     var point;
+	 if(apiProvider==1)
 		point = new GMaps.Point(x,y);
-		break;
-	case 2:
+	 else if(apiProvider==2) 
 		point = new QMaps.Point(x,y);
-		break;
-	case 3:
+	 else if(apiProvider==3) 
 		point = new BMaps.Pixel(x,y);
-		break;
-	}
 	 return point;
    }
    
    function Size(width,height)
    {
-    var size;
-	switch(apiProvider)
-	{
-	case 1:
+     var size;
+	 
+	 if(apiProvider==1)
 		size = new GMaps.Size(width,height);
-		break;
-	case 2:
+	 else if(apiProvider==2) 
 		size = new QMaps.Size(width,height);
-		break;
-	case 3:
+	 else if(apiProvider==3) 
 		size = new BMaps.Size(width,height);
-		break;
-	}
 	 return size;
    }
    
@@ -146,7 +131,8 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    }
    
    function StreetViewService(){
-		PanoSvFrom.apply(this);	
+		PanoSvFrom.apply(this);
+	
 		this.getPanoramaById = getPanoramaById;
 		this.getPanoramaByLocation = getPanoramaByLocation;
    }
@@ -213,7 +199,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		
 	  case 2:	
 	    var sv_svc = new QMaps.PanoramaService();
-		sv_svc.getPano(position,radius,function(ret){
+		sv_svc.getPano(position,radius,function(ret) {
 		  if(ret !== 0){
 			data = {
 				location: {pano:ret.id,latLng:ret.latlng,description:ret.description}
@@ -242,36 +228,56 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		break;
 	  }
    };
- 
- 
- 
-	// Map Module     
-   function Map(div,opt)
+   
+
+   
+  
+   //Map Module
+/*    function WhilchMap()
    {
     var map;
-	switch(apiProvider)
+	switch(apiProvider){
+	 case 1:
+		map = GMaps.Map
+		break;
+	 case 2:
+		map = QMaps.Map; 
+		break;
+	 case 3:
+		map = BMaps.Map;
+		break;
+	 }
+	  return map;
+   }
+   
+   function Map(div,opt)
+   {
+      WhilchMap.apply(this,arguments);
+	  this.addOverlay = function(overlay){};
+	  this.setStreetView = function(streetview){};
+	  this.setOptions;
+   } */
+      
+   function Map(div,opt)
+   {
+      var map;
+	  switch(apiProvider)
 	{
 	 case 1:
 		map = new GMaps.Map(div,opt);
 		map.addOverlay = function(overlay){};
-		map.centerAndZoom = function(center,zoom){
-			map.setCenter(center);
-			map.setZoom(zoom);
-		};
 		break;
 	 case 2:
 		map = new QMaps.Map(div,opt); 
 		map.addOverlay = function(overlay){};
 		map.setStreetView = function(streetview){};
-		map.centerAndZoom = function(center,zoom){
-			map.setCenter(center);
-			map.setZoom(zoom);
-		};
 		break;
 	 case 3:
 		map = new BMaps.Map(div,opt);	
 		map.setStreetView = map.setPanorama;
 		map.setOptions = function(opt){
+			map.setZoom(opt.zoom);
+			map.setCenter(opt.center)
 			if(opt.mapTypeControl){
 				map.enableScrollWheelZoom();
 			}
@@ -279,8 +285,8 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		map.setStreetView = map.setPanorama;
 		break;
 	 }
-	map.visualRefresh = true;
-	return map;
+	  map.visualRefresh = true;
+	  return map;
    }
    
    Map.setOptions = function(opt){
@@ -323,7 +329,7 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 			ROADMAP : type.BMAP_NORMAL_MAP,
 			HYBRID : type.BMAP_PERSPECTIVE_MAP,
 		};
-		break;
+	  break;
 	 }
 	 return typeid;
    }
@@ -344,10 +350,10 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		TOP_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_TOP_RIGHT,
 		BOTTOM_LEFT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_LEFT,
 		BOTTOM_RIGHT: BMaps.ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT
-	  };
+	  }
 	  break;
 	}
-	return ;	
+	  return ;	
    }
    
    
@@ -360,32 +366,80 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	 {
 	 case 1:
 		sv_coverage_layer = new GMaps.StreetViewCoverageLayer();
-		sv_coverage_layer.removeMap = function(map){
-			sv_coverage_layer.setmap(null);
-		};
 		break;	
 	 case 2:
 	    sv_coverage_layer = new QMaps.PanoramaLayer();
-		sv_coverage_layer.removeMap = function(map){
-			sv_coverage_layer.setmap(null);
-		};
 		break;
 	 case 3:
 	    sv_coverage_layer = new BMaps.PanoramaCoverageLayer();
-		sv_coverage_layer.setMap = function(map){
-			if(map!==null) map.addTileLayer(sv_coverage_layer);
-		};
-		sv_coverage_layer.removeMap = function(map){
-			map.removeTileLayer(sv_coverage_layer);
-		}
+		
 		break;
 	}
+	sv_coverage_layer.setMap = function(map,sv_coverage_layer){
+		coverSetMap(map,sv_coverage_layer);
+	};
+	sv_coverage_layer.removeMap = function(map,sv_coverage_layer){
+		coverRemoveMap(map,sv_coverage_layer);
+	};	
 	return sv_coverage_layer; 
    } 
    
+   function coverSetMap(map,cover){
+	 switch(apiProvider)
+	 {
+	 case 1:
+	 case 2:
+	    cover.setMap(map);
+		break;
+	 case 3:
+		if(map!==null) map.addTileLayer(new BMap.PanoramaCoverageLayer());
+		break;
+	}
+   }
+   
+   function coverRemoveMap(map,cover){
+	 switch(apiProvider)
+	 {
+	 case 1:
+	 case 2:
+	    cover.setMap(null);
+		break;
+	 case 3:
+		map.removeTileLayer(cover);
+		break;
+	}
+   }
    
    //Marker Module
-   function Marker(opt)
+/*    function Marker(opt)
+   {
+      var marker;
+      switch(apiProvider)
+	  {
+	  case 1:
+		marker = GMaps.Marker;
+	    break;
+	  case 2:
+        marker = QMaps.Marker;
+		break;	
+	  case 3: 
+        marker = BMaps.Marker;
+		break;
+	  }
+	  marker.call(this,opt.position,{
+			title: opt.title,
+			icon: opt.icon,
+			enableClicking: opt.clickable
+	  });
+		
+	  this.setMap = function(map){
+			if(null !== map) map.addOverlay(this);  
+			else map.removeOverlay();
+		};
+   }   */
+   
+   
+   	function Marker(opt)
    {
       var marker;
       switch(apiProvider)
@@ -413,58 +467,55 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    
 
    
-   //InfoWindow Module
+   
+
+   //infoWindow
    function InfoWindow(opt)
    {
       var info; 
-      switch(apiProvider)
-	  {
-	  case 1:
+	  if(apiProvider==1){
 		info = new GMaps.InfoWindow({
-			content: opt.content,
-			disableAutoPan: opt.disableAutoPan
-			});
+        content: opt.content,
+        disableAutoPan: opt.disableAutoPan
+      });
 		info.openInfoWindow = function(map,latlng){
 			info.setPosition(latlng);
 			info.open(map);
-		};
+		}
 		info.closeInfoWindow = function(map){
 			info.close();
 		};
-	    break;
-		
-	  case 2:
+	  }
+	  else if(apiProvider==2){
 		info = new QMaps.InfoWindow({
         content: opt.content,
 		map: opt.map
-		});
+      });
 		info.openInfoWindow = function(map,latlng){
 			info.setPosition(latlng);
 			info.open();
-		};
+		}
 		info.closeInfoWindow = function(map){
 			info.close();
 		};
-		break;	
-		
-	  case 3: 
+	  }
+	  else if(apiProvider==3){
 		info = new BMaps.InfoWindow(opt.content,{
 		enableAutoPan: !(opt.disableAutoPan)
 		});
 		info.openInfoWindow = function(map,latlng){
 			map.openInfoWindow(info, latlng);
-		};
+		}
 		info.closeInfoWindow = function(map){
 			map.closeInfoWindow();
 		};
-		break;
 	  }	  
 	  return info;
    }
     	
 	
 	
-   //StreetViewPanorama Module
+   //StreetViewPanorama
    function StreetViewPanorama(div,opt)
    {
      var streetview;
@@ -484,25 +535,14 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 		streetview.setPano = function(panoId){
 			streetview.setId(panoId);
 			trigger("pano_changed");
-		};
+		}
 		break;
 	  }
      return streetview;
    }
  
 
-   //Events
-   function event(){
-	switch(apiProvider){
-	  case 1:
-	     return GMaps.event;
-	  case 2:
-		 return QMaps.event;
-	  case 3:
-		 return BMapLib.EventWrapper;
-	 }
-   }
-   
+   //Listener
    function addListener(instance, eventName, handler)
    {
 	  switch(apiProvider){
@@ -520,54 +560,42 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    
    function addListenerOnce(instance, eventName, handler)
    {
-	  switch(apiProvider){
-	  case 1:
+      if(apiProvider==1)
 		GMaps.event.addListenerOnce(instance, eventName,handler);
-		break;
-	  case 2:
+	  else if(apiProvider==2) 
 		QMaps.event.addListenerOnce(instance, eventName,handler);
-		break;
-	  case 3:
+	  else if(apiProvider==3)
 		BMapLib.EventWrapper.addListenerOnce(instance, unifyEvent(eventName), handler);
-		break;
-	  }
    }
+   
    
    function trigger(instance, eventName)
    {
-	switch(apiProvider){
-	  case 1:
+     if(apiProvider==1)
        GMaps.event.trigger(instance, eventName);
-		break;
-	  case 2:
+	 else if(apiProvider==2) 
 	   QMaps.event.trigger(instance, eventName);  
-		break;
-	  case 3:
+	 else if(apiProvider==3) 
 	   BMapLib.EventWrapper.trigger(instance, unifyEvent(eventName));
-	   break;
-	}
    }
    
-	function unifyEvent(eventName){
-		var evtname;
-		if(eventName == 'idle') evtname = 'tilesloaded';
-		else if(eventName == 'zoom_changed') evtname = 'zoomend';
-		else evtname = eventName;
-		return evtname;
-	}
+   
+   function unifyEvent(eventName){
+   		 var evtname;
+		 if(eventName == 'idle') evtname = 'tilesloaded';
+		 else if(eventName == 'zoom_changed') evtname = 'zoomend';
+		 //else if(eventName == 'pano_changed') evtname = 'position_changed';
+		 else evtname = eventName;
+		 return evtname;
+   }
    
    function getEventPos(event){
-	  switch(apiProvider){
-	  case 1:
+	 if(apiProvider==1)
 		return event.latLng;
-		break;
-	  case 2:
+	 else if(apiProvider==2) 
 	    return event.latLng;  
-		break;
-	  case 3:
+	 else if(apiProvider==3) 
 	    return event.point;
-		break;
-	  }
    }
   
   
@@ -578,16 +606,12 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
    function computeOffset(from, distance, heading)
    {
      var loc = null;
-	  switch(apiProvider){
-	  case 1:
+     if(apiProvider==1) 
 	    loc = GMaps.geometry.spherical.computeOffset(from, distance, heading);
-		break;
-	  case 2:
+	 else if(apiProvider==2) 
 	    loc = QMaps.geometry.spherical.computeOffset(from, distance, heading);
-		break;
-	  case 3:
-		break;
-	}
+	 else if(apiProvider==3) ;
+	 //   loc = BMaps.geometry.spherical.computeOffset(from, distance, heading);  //?
 	 return loc;
    }
 
@@ -781,7 +805,8 @@ define(['baidumaps','tencentmaps','googlemaps','BmapLib','config','jquery'], fun
 	InfoWindow: InfoWindow,
 	trigger: trigger,
 	getEventPos: getEventPos,
-
+	//getPanoramaByLocation: getPanoramaByLocation,
+	//getPanoramaById: getPanoramaById,
 	disableDefaultUI: disableDefaultUI,
 	disableSVDefaultUI: disableSVDefaultUI,
 	enableSVDefaultUI: enableSVDefaultUI,

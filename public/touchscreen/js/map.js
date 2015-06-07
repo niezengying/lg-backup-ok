@@ -40,10 +40,11 @@ function(
       var self = this;
 
       if (typeof XMaps === 'undefined') L.error('Maps API not loaded!');
-
+	  
+	 // this.provider = XMaps.apiProvider - 1;
       this.default_center = new XMaps.LatLng(
-        config.touchscreen.default_center[0],
-        config.touchscreen.default_center[1]
+        config.touchscreen.default_center[XMaps.apiProvider - 1].lat,
+        config.touchscreen.default_center[XMaps.apiProvider - 1].lng
       );
 
       // use the improved visuals from the maps preview
@@ -51,9 +52,9 @@ function(
 
       var mapOptions = {
         backgroundColor: "black",
-        center: this.default_center,
-        zoom: 14,
-       // disableDefaultUI: true,
+     //   center: this.default_center,
+      //  zoom: 14,
+        disableDefaultUI: true,
         mapTypeControl: config.touchscreen.show_maptypectl,
         mapTypeControlOptions: {
           mapTypeIds: [ XMaps.MapTypeId.ROADMAP, XMaps.MapTypeId.HYBRID ],
@@ -61,12 +62,11 @@ function(
         },
         mapTypeId: XMaps.MapTypeId[config.touchscreen.default_maptype]
       };
-
-      this.map = new XMaps.Map(
-        this.$canvas,
-        mapOptions
-      );
-
+	  
+      //this.map = new XMaps.Map(this.$canvas,mapOptions);
+	  this.map = new XMaps.Map(this.$canvas,mapOptions);
+	  this.map.centerAndZoom(this.default_center, 14);
+	  this.map.setOptions(mapOptions);
       this.map.setOptions({styles: PeruseMapStyles});
 
       // instantiate map modules
@@ -166,6 +166,9 @@ function(
           if(stat == XMaps.StreetViewStatus.OK) {
             var result_latlng = data.location.latLng;
             var result_panoid = data.location.pano;
+			
+			console.log(result_latlng);
+			console.log(result_panoid);
 
             self._broadcast_pano(result_panoid);
             self._pan_map(result_latlng);
